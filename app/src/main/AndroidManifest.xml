@@ -1,0 +1,56 @@
+<manifest package="testdd.wj.com.myapplicationdingding"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /><!--WRITE_SETTINGS-->
+
+    <application
+        android:allowBackup="true"
+        android:name=".TestApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".LongRunningService" >
+
+        </service>
+
+        <receiver android:name=".AlarmReceiver"
+                  android:directBootAware="true"
+                  android:enabled="true"
+                  android:exported="true"
+                  tools:targetApi="n"
+            >
+            <intent-filter>
+                <action android:name="com.android.deskclock.ALARM_DONE"></action>
+                <action android:name="com.android.test"></action>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="testdd.wj.com.myapplicationdingding.AccessibilitySampleService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/accessibility_tip"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <!-- 通过xml文件完成辅助功能相关配置，也可以在onServiceConnected中动态配置 -->
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config" />
+        </service>
+
+
+
+    </application>
+</manifest>
