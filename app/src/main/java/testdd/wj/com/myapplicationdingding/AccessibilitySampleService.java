@@ -17,6 +17,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
+import java.io.DataOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class AccessibilitySampleService extends AccessibilityService {
     public static final String pak="com.alibaba.android.rimet";
     public static final String settings="com.android.settings";
     public static final String thispak="testdd.wj.com.myapplicationdingding";
+    String workWebviewResId="com.alibaba.android.rimet:id/common_webview"; //工作空间里面的内容
     public static  final  int SLEEPTIME=5000;
 
 
@@ -133,7 +135,11 @@ public class AccessibilitySampleService extends AccessibilityService {
         Log.i(TAG,"kaoqindakaRect.toSting"+kaoqindakaRect.toString());
         Log.i(TAG,"shangbandakaRect.toSting"+shangbandakaRect.toString());
         Log.i(TAG, "xiabandakaRect.toString"+xiabandakaRect.toString());
-        task(getRootInActiveWindow());
+        String  nowPackageName = event.getPackageName().toString();
+        if (nowPackageName!=null && nowPackageName.equals(pak)) {
+            pageState=3;
+            task(getRootInActiveWindow());
+        }
 //        String  nowPackageName = event.getPackageName().toString();
 //        Log.i(TAG,nowPackageName);
 //        if (nowPackageName==null){
@@ -194,7 +200,7 @@ public class AccessibilitySampleService extends AccessibilityService {
 //        Rect(6, 954, 273, 1176);
 //  && node.getClassName().equals("android.view.View")
         //576, 2605 - 864, 2792
-        if (gongzuoRect.contains(rect)){
+        if (gongzuoRect.contains(rect) &&  !node.getClass().equals("android.widget.RelativeLayout")){
             Log.i(TAG,"找到节点--工作" +rect.toString());
             if(node.performAction(AccessibilityNodeInfo.ACTION_CLICK)){
                 pageState=3;
@@ -203,7 +209,7 @@ public class AccessibilitySampleService extends AccessibilityService {
                 return false;
             }
         }
-        if (kaoqindakaRect.contains(rect)){
+        if (kaoqindakaRect.contains(rect) && !node.getClassName().equals("android.widget.RelativeLayout")){
             Log.i(TAG,"找到节点" +rect.toString());
 
             if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)){
@@ -211,6 +217,8 @@ public class AccessibilitySampleService extends AccessibilityService {
                 pageState=3;
                 try {
                     Thread.sleep(30000);
+                    String AdbTap = "input tap 360 750\n";
+                    upgradeRootPermission(AdbTap);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -240,7 +248,7 @@ public class AccessibilitySampleService extends AccessibilityService {
             if (shangbandakaRect.contains(rect) ) {
                 Log.i(TAG, "找到节点-" + rect.toString());
                 if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
-                    Log.i(TAG, "节点点击成功上班打卡-------" + rect.toString());
+                    Log.i(TAG, "-------" + rect.toString());
                     pageState = 0;
                     return true;
                 } else {
@@ -254,7 +262,7 @@ public class AccessibilitySampleService extends AccessibilityService {
             if (xiabandakaRect.contains(rect) ) {
                 Log.i(TAG, "找到节点-" + rect.toString());
                 if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
-                    Log.i(TAG, "节点点击成功下班打卡-------" + rect.toString());
+                    Log.i(TAG, "-------" + rect.toString());
                     pageState = 0;
                     return true;
                 } else {
@@ -406,5 +414,31 @@ public class AccessibilitySampleService extends AccessibilityService {
         SystemClock.sleep(SLEEPTIME);
         performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
         clearMemory();
+    }
+
+
+
+    public static boolean upgradeRootPermission(String cmd) {
+        Process process = null;
+        DataOutputStream os = null;
+        try {
+            process = Runtime.getRuntime().exec("su"); //切换到root帐号
+            os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes(cmd + "/n");
+            os.writeBytes("exit/n");
+            os.flush();
+            process.waitFor();
+        } catch (Exception e) {
+            return false;
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+                process.destroy();
+            } catch (Exception e) {
+            }
+        }
+        return true;
     }
 }

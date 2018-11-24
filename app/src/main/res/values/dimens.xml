@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--考勤-->
-    <dimen name="kaoqindakaRectLeft">0dp</dimen>
-    <dimen name="kaoqindakaRectTop">239dp</dimen>
-    <dimen name="kaoqindakaRectRight">68dp</dimen>
-    <dimen name="kaoqindakaRectBottom">300dp</dimen>
-    <!--上班打卡-->
-    <dimen name="shangbandakaRectLeft">89dp</dimen>
-    <dimen name="shangbandakaRectTop">149dp</dimen>
-    <dimen name="shangbandakaRectRight">181dp</dimen>
-    <dimen name="shangbandakaRecttBottom">242dp</dimen>
-    <!--下班打卡-->
-    <dimen name="xiabandakaRectLeft">89dp</dimen>
-    <dimen name="xiabandakaRectTop">233dp</dimen>
-    <dimen name="xiabandakaRectRight">181dp</dimen>
-    <dimen name="xiabandakaRectBottom">325dp</dimen>
-    <!--工作-->
+    <!--考勤[6,954][273,1176]-->
+    <dimen name="kaoqindakaRectLeft">0dp</dimen><!--2-->
+    <dimen name="kaoqindakaRectTop">310dp</dimen><!--318-->
+    <dimen name="kaoqindakaRectRight">80dp</dimen> <!--91-->
+    <dimen name="kaoqindakaRectBottom">390dp</dimen><!--392-->
+    <!--上班打卡[357,597][723,966]-->
+    <dimen name="shangbandakaRectLeft">110dp</dimen><!--119-->
+    <dimen name="shangbandakaRectTop">190dp</dimen><!--199-->
+    <dimen name="shangbandakaRectRight">240dp</dimen><!--241-->
+    <dimen name="shangbandakaRecttBottom">242dp</dimen><!--322-->
+    <!--下班打卡 [357,930][723,1299]-->
+    <dimen name="xiabandakaRectLeft">110dp</dimen><!--119-->
+    <dimen name="xiabandakaRectTop">233dp</dimen><!--310-->
+    <dimen name="xiabandakaRectRight">181dp</dimen><!--241-->
+    <dimen name="xiabandakaRectBottom">325dp</dimen><!--433-->
+    <!--工作 [432,1762][648,1920]-->
     <dimen name="gongzuoRectLeft">144dp</dimen>
-    <dimen name="gongzuoRectTop">550dp</dimen>
+    <dimen name="gongzuoRectTop">587dp</dimen>
     <dimen name="gongzuoRectRight">216dp</dimen>
-    <dimen name="gongzuoRectBottom">603dp</dimen>
+    <dimen name="gongzuoRectBottom">640dp</dimen>
 
 
 

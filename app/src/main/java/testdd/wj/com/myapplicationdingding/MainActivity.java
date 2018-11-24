@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
                     bundle = msg.getData();
                     long zt = bundle.getLong("dataLong");
                     String dateString = bundle.getString("AlarmReceiver");
-                    Intent intent = getPackageManager().getLaunchIntentForPackage(TestApplication.pak);
+//                    Intent intent = getPackageManager().getLaunchIntentForPackage(TestApplication.pak);
 
-//                    Intent intent = new Intent(Intent.ACTION_VIEW); //跳到钉钉打卡上班的页面
-//                    intent.setData(Uri.parse(TestApplication.SCHEME_DING_DING));
+                    Intent intent = new Intent(Intent.ACTION_VIEW); //
+                    intent.setData(Uri.parse(TestApplication.SCHEME_DING_DING));
 
                     if (intent != null) {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             return;
                         }
-//
                         PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
                         manager.set(AlarmManager.RTC, System.currentTimeMillis() + zt, pi);
 
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         TestApplication.setmHandler(mHandler);
         kaiqu = findViewById(R.id.kaiqu);
         StringBuffer buffer = new StringBuffer();
+//        getRootAhth();
+//        upgradeRootPermission(getPackageCodePath());
         TestApplication.mContext.getResources().getDimension(R.dimen.kaoqindakaRectLeft);
         //考勤
         buffer.append("6px转成dp"+ DensityUtil.px2dp(MainActivity.this,6));
@@ -117,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         buffer.append("\n723px转成dp"+ DensityUtil.px2dp(MainActivity.this,723));
         buffer.append("\n1299px转成dp"+ DensityUtil.px2dp(MainActivity.this,1299));
         //工作 [576,2201][864,2412]
+        //432, 1762 - 648, 1920
         buffer.append("\n-------\n576px转成dp"+ DensityUtil.px2dp(MainActivity.this,575));
         buffer.append("\n2201px转成dp"+ DensityUtil.px2dp(MainActivity.this,2200));
         buffer.append("\n865px转成dp"+ DensityUtil.px2dp(MainActivity.this,865));
@@ -237,5 +241,57 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return false;
+    }
+
+
+    /**
+     * 应用程序运行命令获取 Root权限，设备必须已破解(已Root过，获得ROOT权限)
+     * @return 应用程序是/否获取Root权限
+     */
+    public static boolean getRootAhth() {
+        OutputStream os = null;
+        try {
+            //请求进入su账户，类似PC端adb shell之后的su命令。同时，获取与之相关的输出流
+            os = Runtime.getRuntime().exec("su").getOutputStream();
+            //退出su
+            os.write(("exit\n").getBytes());
+            os.flush();
+            //上述命令执行成功，则进入su账户成功，具备进入su的能力，说明已经获取到了root权限
+            return true;
+        } catch (Exception e) {
+            System.out.println("adb命令执行失败，错误原因：" + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+            } catch (Exception e) {
+            }
+        }
+    }
+    public static boolean upgradeRootPermission(String pkgCodePath) {
+        Process process = null;
+        DataOutputStream os = null;
+        try {
+            String cmd="chmod 777 " + pkgCodePath;
+            process = Runtime.getRuntime().exec("su"); //切换到root帐号
+            os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes(cmd + "/n");
+            os.writeBytes("exit/n");
+            os.flush();
+            process.waitFor();
+        } catch (Exception e) {
+            return false;
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+                process.destroy();
+            } catch (Exception e) {
+            }
+        }
+        return true;
     }
 }
