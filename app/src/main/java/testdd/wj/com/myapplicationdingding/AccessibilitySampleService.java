@@ -31,7 +31,7 @@ import util.DensityUtil;
  * Created by jie on 2018/10/24.
  */
 public class AccessibilitySampleService extends AccessibilityService {
-    public String TAG="AccessibilitySampleService";
+    public static  String TAG="AccessibilitySampleService";
     String workResId = "com.alibaba.android.rimet:id/home_bottom_tab_button_work"; //工作按钮的ID
     String toolbar ="com.alibaba.android.rimet:id/toolbar"; //打卡上面的按钮;
     Map<String,Rect> controlRect=new HashMap<String,Rect>();
@@ -44,6 +44,9 @@ public class AccessibilitySampleService extends AccessibilityService {
     public static final String thispak="testdd.wj.com.myapplicationdingding";
     String workWebviewResId="com.alibaba.android.rimet:id/common_webview"; //工作空间里面的内容
     public static  final  int SLEEPTIME=5000;
+
+
+    // String AdbTap = "input tap 500 700\n";
 
 
     public volatile int  pageState=-1; //0没有打开 1 首页 2 工作页面 3考勤页面 4打卡上班页面
@@ -200,78 +203,78 @@ public class AccessibilitySampleService extends AccessibilityService {
 //        Rect(6, 954, 273, 1176);
 //  && node.getClassName().equals("android.view.View")
         //576, 2605 - 864, 2792
-        if (gongzuoRect.contains(rect) &&  !node.getClass().equals("android.widget.RelativeLayout")){
-            Log.i(TAG,"找到节点--工作" +rect.toString());
-            if(node.performAction(AccessibilityNodeInfo.ACTION_CLICK)){
-                pageState=3;
-                return true;
-            }else {
-                return false;
-            }
-        }
-        if (kaoqindakaRect.contains(rect) && !node.getClassName().equals("android.widget.RelativeLayout")){
-            Log.i(TAG,"找到节点" +rect.toString());
-
-            if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)){
-                Log.i(TAG,"节点点击成功考勤打卡-------"+rect.toString());
-                pageState=3;
-                try {
-                    Thread.sleep(30000);
-                    String AdbTap = "input tap 360 750\n";
-                    upgradeRootPermission(AdbTap);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                return true;
-            }else{
-//                pageState=-1;
-                return false;
-            }
-
-        }
-        //[357,597][723,966]
-        //[357,597][723,966]
-        //[357,597][723,966]
-//        Rect(357, 597 , 723, 966);
-        //android.app.Dialog 这是打卡成功后弹出的 弹窗 [0,210][1080,1920] 这是位置
-
-
-        //[357,930][723,1299]
-        //下班打卡的位置
-        //[120,522][960,1605]  这是打卡成功后
-        Date date = new Date();
-        String tem =  simpleDateFormat.format(date);
-
-        if (!tem.substring(11,13).equals(TestApplication.mContext.getString(R.string.shangbanshijian))){
-            //&& node.getClassName().equals("android.view.View")
-            if (shangbandakaRect.contains(rect) ) {
-                Log.i(TAG, "找到节点-" + rect.toString());
-                if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
-                    Log.i(TAG, "-------" + rect.toString());
-                    pageState = 0;
-                    return true;
-                } else {
-//                pageState=-1;
-                    return false;
-                }
-
-            }
-        }else{
-            //&& node.getClassName().equals("android.view.View")
-            if (xiabandakaRect.contains(rect) ) {
-                Log.i(TAG, "找到节点-" + rect.toString());
-                if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
-                    Log.i(TAG, "-------" + rect.toString());
-                    pageState = 0;
-                    return true;
-                } else {
-//                pageState=-1;
-                    return false;
-                }
-            }
-
-        }
+//        if (gongzuoRect.contains(rect) &&  !node.getClass().equals("android.widget.RelativeLayout")){
+//            Log.i(TAG,"找到节点--工作" +rect.toString());
+//            if(node.performAction(AccessibilityNodeInfo.ACTION_CLICK)){
+//                pageState=3;
+//                return true;
+//            }else {
+//                return false;
+//            }
+//        }
+//        if (kaoqindakaRect.contains(rect) && !node.getClassName().equals("android.widget.RelativeLayout")){
+//            Log.i(TAG,"找到节点" +rect.toString());
+//
+//            if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)){
+//                Log.i(TAG,"节点点击成功考勤打卡-------"+rect.toString());
+//                pageState=3;
+//                try {
+//                    Thread.sleep(30000);
+//                    String AdbTap = "input tap 340 580\n";
+//                    upgradeRootPermission(AdbTap);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                return true;
+//            }else{
+////                pageState=-1;
+//                return false;
+//            }
+//
+//        }
+//        //[357,597][723,966]
+//        //[357,597][723,966]
+//        //[357,597][723,966]
+////        Rect(357, 597 , 723, 966);
+//        //android.app.Dialog 这是打卡成功后弹出的 弹窗 [0,210][1080,1920] 这是位置
+//
+//
+//        //[357,930][723,1299]
+//        //下班打卡的位置
+//        //[120,522][960,1605]  这是打卡成功后
+//        Date date = new Date();
+//        String tem =  simpleDateFormat.format(date);
+//
+//        if (!tem.substring(11,13).equals(TestApplication.mContext.getString(R.string.shangbanshijian))){
+//            //&& node.getClassName().equals("android.view.View")
+//            if (shangbandakaRect.contains(rect) ) {
+//                Log.i(TAG, "找到节点-" + rect.toString());
+//                if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
+//                    Log.i(TAG, "-------" + rect.toString());
+//                    pageState = 0;
+//                    return true;
+//                } else {
+////                pageState=-1;
+//                    return false;
+//                }
+//
+//            }
+//        }else{
+//            //&& node.getClassName().equals("android.view.View")
+//            if (xiabandakaRect.contains(rect) ) {
+//                Log.i(TAG, "找到节点-" + rect.toString());
+//                if (node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
+//                    Log.i(TAG, "-------" + rect.toString());
+//                    pageState = 0;
+//                    return true;
+//                } else {
+////                pageState=-1;
+//                    return false;
+//                }
+//            }
+//
+//        }
         for(int i = 0 ; i < node.getChildCount()  ; i++){      //遍历子节点
             dfsnode(node.getChild(i),num+1);
         }
@@ -293,8 +296,15 @@ public class AccessibilitySampleService extends AccessibilityService {
         if (pageState == 3) {
             Log.i(TAG, "方法查找上班打卡页面：" + System.currentTimeMillis());   //打印
             try {
-
+                //[357,1002][723,1371]
                 Thread.sleep(30000);
+                Log.i(TAG, "暂定结束：" + System.currentTimeMillis());   //打印
+                dfsnode(getRootInActiveWindow(),0);
+//                String AdbTap = "input tap 500 1100\n";
+//                if (upgradeRootPermission(AdbTap)){
+//                    qingli();
+//                }else{
+//                };
                 Log.i(TAG, "方法查找上班打卡页面：" + System.currentTimeMillis());   //打印
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -310,33 +320,33 @@ public class AccessibilitySampleService extends AccessibilityService {
             }
             showPackageDetail();
         }
-        getRootInActiveWindow();//刷新页面节点
-        if (pageState < 2) {
-            Log.i(TAG, "方法查找工作页面：" + System.currentTimeMillis());   //打印
-            if (dfsnode(getRootInActiveWindow(), 0)) {
-                pageState = 3;
-                return;
-            } else {
-//                pageState = -1;
-//                mState = "打卡异常";
-                showPackageDetail();
-            }
+//        getRootInActiveWindow();//刷新页面节点
+//        if (pageState < 2) {
+//            Log.i(TAG, "方法查找工作页面：" + System.currentTimeMillis());   //打印
+//            if (dfsnode(getRootInActiveWindow(), 0)) {
+//                pageState = 3;
+//                return;
+//            } else {
+////                pageState = -1;
+////                mState = "打卡异常";
+//                showPackageDetail();
+//            }
+//
+//        }
+//        getRootInActiveWindow();//刷新页面节点
+//        if (pageState < 2) {
+//            if (dfsnode(getRootInActiveWindow(), 0)){
+//                try {
+//
+//                }catch (Exception e){
+//                    pageState = -1;
+//                    mState = "等待打卡";
+//                }
+//
+//
+//            };
 
-        }
-        getRootInActiveWindow();//刷新页面节点
-        if (pageState < 2) {
-            if (dfsnode(getRootInActiveWindow(), 0)){
-                try {
-
-                }catch (Exception e){
-                    pageState = -1;
-                    mState = "等待打卡";
-                }
-
-
-            };
-
-    }
+//    }
 //        getRootInActiveWindow();//刷新页面节点
 
     }
@@ -419,6 +429,7 @@ public class AccessibilitySampleService extends AccessibilityService {
 
 
     public static boolean upgradeRootPermission(String cmd) {
+        Log.i(TAG, "尝试点击：" +cmd +"|||||"+System.currentTimeMillis());   //打印
         Process process = null;
         DataOutputStream os = null;
         try {
@@ -440,5 +451,21 @@ public class AccessibilitySampleService extends AccessibilityService {
             }
         }
         return true;
+    }
+
+    public void qingli(){
+        ActivityManager activityManger = (ActivityManager) TestApplication.mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> list = activityManger.getRunningAppProcesses();
+        if (list != null){
+            for (ActivityManager.RunningAppProcessInfo appProcessInfo: list){
+                for (String s :  appProcessInfo.pkgList){
+                    if (s.equals(TestApplication.pak)){
+                        android.os.Process.killProcess(appProcessInfo.pid);
+                    }
+                }
+
+            }
+
+        }
     }
 }

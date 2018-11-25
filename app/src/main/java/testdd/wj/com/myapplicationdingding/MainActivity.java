@@ -1,6 +1,7 @@
 package testdd.wj.com.myapplicationdingding;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
@@ -294,4 +295,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
 }
